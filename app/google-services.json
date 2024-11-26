@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "811164572141",
+    "project_id": "hellov8",
+    "storage_bucket": "hellov8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811164572141:android:b14ba9ad61e0e43a7aafe4",
+        "android_client_info": {
+          "package_name": "com.example.hellov8"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtOv9P0K4NBWskBSpHIPJGWyBO9W_MRIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
