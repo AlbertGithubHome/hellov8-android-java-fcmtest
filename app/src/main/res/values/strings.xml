@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">hellov8</string>
+    <string name="accessibility_service_description">Accessibility Tracker Service</string>
 </resources>
