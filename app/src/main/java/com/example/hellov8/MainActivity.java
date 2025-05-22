@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.content.pm.PackageManager;
 import android.Manifest;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,6 +25,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 
@@ -61,13 +66,19 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(networkChangeReceiver, intentFilter);
 
         // 注册定时任务
-        scheduleJob(this);
+        // scheduleJob(this);
 
         // 在启动时弹出提示
         //showAutoStartPermissionDialog();
 
         // 引导开启电池优化
-        openBatteryOptimizationSettings(this);
+        //openBatteryOptimizationSettings(this);
+
+        // 主动请求 FCM Token
+        requestFcmToken();
+
+        // 订阅主题
+        subcribeTopic();
     }
 
     @Override
@@ -89,6 +100,36 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Notification通知权限被拒绝");
             }
         }
+    }
+
+    private void requestFcmToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "FCM Token 获取失败", task.getException());
+                            return;
+                        }
+
+                        // 获取成功，处理 Token
+                        String token = task.getResult();
+                        Log.d(TAG, "FCM Token: " + token);
+
+                        // 将 Token 发送到你的服务器（示例）
+                    }
+                });
+    }
+
+    private void subcribeTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("news")
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("FCM", "订阅成功");
+                    } else {
+                        Log.e("FCM", "订阅失败", task.getException());
+                    }
+                });
     }
 
     // 周期性任务的最小间隔: 在 Android 8.0（API 级别 26）及更高版本中，
